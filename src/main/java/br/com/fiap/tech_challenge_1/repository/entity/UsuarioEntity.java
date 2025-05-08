@@ -18,15 +18,17 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nome;
+
 
     private String email;
 
+    @Column(nullable = false)
     private String login;
 
+    @Column(nullable = false)
     private String senha;
-
-    private String token;
 
     private LocalDate dataUpdate;
 
