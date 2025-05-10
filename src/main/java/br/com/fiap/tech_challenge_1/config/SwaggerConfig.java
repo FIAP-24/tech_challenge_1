@@ -2,16 +2,12 @@ package br.com.fiap.tech_challenge_1.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Swagger/OpenAPI configuration
- */
 @Configuration
 public class SwaggerConfig {
 
@@ -27,10 +23,6 @@ public class SwaggerConfig {
                         .title("User Management API")
                         .description("API for user management operations")
                         .version("v1.0.0")
-                        .contact(new Contact()
-                                .name("FIAP")
-                                .url("https://www.fiap.com.br")
-                                .email("contact@fiap.com.br"))
                         .license(new License()
                                 .name("MIT License")
                                 .url("https://opensource.org/licenses/MIT")));

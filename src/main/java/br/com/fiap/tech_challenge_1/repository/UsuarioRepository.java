@@ -1,15 +1,15 @@
 package br.com.fiap.tech_challenge_1.repository;
 
-import br.com.fiap.tech_challenge_1.repository.entity.UsuarioEntity;
-import java.util.List;
-import java.util.Optional;
+import br.com.fiap.tech_challenge_1.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
+import java.util.Optional;
 
-    Optional<UsuarioEntity> findById(Long id);
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Optional<UsuarioEntity> findByLogin(String login);
 
+    Optional<Usuario> findByLogin(String login);
 
 }

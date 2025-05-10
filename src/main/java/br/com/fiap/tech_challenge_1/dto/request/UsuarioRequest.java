@@ -1,8 +1,7 @@
 package br.com.fiap.tech_challenge_1.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import br.com.fiap.tech_challenge_1.domain.enuns.Perfil;
+import jakarta.validation.constraints.*;
 
 public record UsuarioRequest(
         @NotBlank(message = "Nome é obrigatório")
@@ -10,6 +9,10 @@ public record UsuarioRequest(
 
         @Email(message = "Email deve ser válido")
         String email,
+
+        @NotNull
+        @NotEmpty(message = "Perfil é obrigatório")
+        Perfil perfil,
 
         @NotBlank(message = "Login é obrigatório")
         String login,

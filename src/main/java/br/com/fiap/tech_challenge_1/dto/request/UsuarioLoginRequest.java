@@ -2,9 +2,6 @@ package br.com.fiap.tech_challenge_1.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-/**
- * DTO for login requests
- */
 public record UsuarioLoginRequest(
         @NotBlank(message = "Login é obrigatório")
         String login,

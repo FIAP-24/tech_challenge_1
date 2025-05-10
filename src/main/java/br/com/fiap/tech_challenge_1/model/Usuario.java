@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * User entity
- */
 @Entity
 @Table(name = "usuario",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"login"})})
@@ -27,6 +24,8 @@ public class Usuario {
 
     @Column(length = 100)
     private String email;
+
+    private String perfil;
 
     @Column(nullable = false, length = 50, unique = true)
     private String login;
