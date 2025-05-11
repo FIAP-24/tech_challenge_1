@@ -1,4 +1,4 @@
-package br.com.fiap.tech_challenge_1.utis;
+package br.com.fiap.tech_challenge_1.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

@@ -10,7 +10,7 @@ import br.com.fiap.tech_challenge_1.mapper.UsuarioMapper;
 import br.com.fiap.tech_challenge_1.model.Usuario;
 import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
 import br.com.fiap.tech_challenge_1.service.UsuarioService;
-import br.com.fiap.tech_challenge_1.utis.PasswordHasher;
+import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
