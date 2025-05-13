@@ -1,6 +1,6 @@
 package br.com.fiap.tech_challenge_1.dto.request;
 
-import br.com.fiap.tech_challenge_1.domain.enuns.Perfil;
+import br.com.fiap.tech_challenge_1.domain.enums.Perfil;
 import jakarta.validation.constraints.*;
 
 public record UsuarioRequest(
@@ -10,8 +10,7 @@ public record UsuarioRequest(
         @Email(message = "Email deve ser válido")
         String email,
 
-        @NotNull
-        @NotEmpty(message = "Perfil é obrigatório")
+        @NotNull(message = "Perfil é obrigatório")
         Perfil perfil,
 
         @NotBlank(message = "Login é obrigatório")

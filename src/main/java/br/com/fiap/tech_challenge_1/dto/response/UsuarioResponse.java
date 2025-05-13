@@ -1,6 +1,6 @@
 package br.com.fiap.tech_challenge_1.dto.response;
 
-import br.com.fiap.tech_challenge_1.domain.enuns.Perfil;
+import br.com.fiap.tech_challenge_1.domain.enums.Perfil;
 
 public record UsuarioResponse(
         Long id,
