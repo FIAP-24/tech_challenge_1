@@ -1,5 +1,6 @@
 package br.com.fiap.tech_challenge_1.controller;
 
+import br.com.fiap.tech_challenge_1.dto.request.UsuarioEditRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioLoginRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
 import br.com.fiap.tech_challenge_1.dto.response.ApiResponse;
@@ -13,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-/**
- * REST controller for user management
- */
 @RestController
 @RequestMapping("/api/v1/usuarios")
 public class UsuarioController {
@@ -64,14 +62,14 @@ public class UsuarioController {
     /**
      * Update existing user
      * @param id User ID
-     * @param usuarioRequest Updated user data
+     * @param usuarioEditRequest Updated user data
      * @return Updated user
      */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UsuarioResponse>> update(
             @PathVariable Long id,
-            @Valid @RequestBody UsuarioRequest usuarioRequest) {
-        UsuarioResponse updated = usuarioService.update(id, usuarioRequest);
+            @Valid @RequestBody UsuarioEditRequest usuarioEditRequest) {
+        UsuarioResponse updated = usuarioService.update(id, usuarioEditRequest);
         return ResponseEntity.ok(ApiResponse.success(updated, "Usuário atualizado com sucesso"));
     }
 

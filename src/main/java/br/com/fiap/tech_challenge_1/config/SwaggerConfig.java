@@ -13,8 +13,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("User Management API")
-                        .description("API for user management operations")
+                        .title("API Gestão de Usuario")
+                        .description("Api para gestão de usuários")
                         .version("v1.0.0")
                         .license(new License()
                                 .name("MIT License")
