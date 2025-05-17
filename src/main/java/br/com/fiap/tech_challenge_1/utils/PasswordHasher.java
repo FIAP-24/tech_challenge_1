@@ -9,8 +9,6 @@ public class PasswordHasher {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public PasswordHasher() {
-        // O parâmetro strength define o fator de trabalho (work factor)
-        // Valores entre 10-12 são recomendados para equilíbrio entre segurança e desempenho
         this.passwordEncoder = new BCryptPasswordEncoder(12);
     }
 

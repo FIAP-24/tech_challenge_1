@@ -1,5 +1,6 @@
 package br.com.fiap.tech_challenge_1.service.impl;
 
+import br.com.fiap.tech_challenge_1.dto.request.UsuarioEditRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioLoginRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
 import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
@@ -87,26 +88,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   @Override
   @Transactional
-  public UsuarioResponse update(Long id, UsuarioRequest request) {
+  public UsuarioResponse update(Long id, UsuarioEditRequest request) {
     Usuario existingUsuario =
         usuarioRepository
             .findById(id)
             .orElseThrow(
                 () -> new ResourceNotFoundException("Usuário não encontrado com id: " + id));
 
-
-    usuarioRepository
-        .findByLogin(request.login())
-        .filter(u -> !u.getId().equals(id))
-        .ifPresent(
-            u -> {
-              throw new DuplicateResourceException("Login já está em uso por outro usuário");
-            });
-
-    existingUsuario.setNome(request.nome());
-    existingUsuario.setEmail(request.email());
-    existingUsuario.setLogin(request.login());
-    existingUsuario.setEndereco(request.endereco());
+    existingUsuario.setNome((request.nome() != null && !request.nome().isEmpty()) ? request.nome() : existingUsuario.getNome());
+    existingUsuario.setEmail((request.email() != null && !request.email().isEmpty()) ? request.email() : existingUsuario.getEmail());
+    existingUsuario.setEndereco((request.endereco() != null && !request.endereco().isEmpty()) ? request.endereco() : existingUsuario.getEndereco());
+    existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isEmpty()) ? request.perfil().name() : existingUsuario.getPerfil());
 
     if (request.senha() != null && !request.senha().isEmpty()) {
       existingUsuario.setSenha(passwordHasher.hashPassword(request.senha()));

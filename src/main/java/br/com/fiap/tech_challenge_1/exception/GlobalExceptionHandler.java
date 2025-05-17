@@ -13,15 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Global exception handler for API
- */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Handle resource not found exceptions
-     */
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleResourceNotFoundException(
             ResourceNotFoundException ex, HttpServletRequest request) {
@@ -30,9 +26,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    /**
-     * Handle duplicate resource exceptions
-     */
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiResponse<String>> handleDuplicateResourceException(
             DuplicateResourceException ex, HttpServletRequest request) {
@@ -41,9 +34,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    /**
-     * Handle authentication exceptions
-     */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiResponse<String>> handleAuthenticationException(
             AuthenticationException ex, HttpServletRequest request) {
@@ -52,9 +42,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(ex.getMessage()));
     }
 
-    /**
-     * Handle validation exceptions from @Valid annotations
-     */
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
@@ -70,9 +58,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Erro de validação: " + errors));
     }
 
-    /**
-     * Handle constraint violation exceptions
-     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<String>> handleConstraintViolationException(
             ConstraintViolationException ex) {
@@ -81,9 +66,6 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("Erro de validação: " + ex.getMessage()));
     }
 
-    /**
-     * Fallback handler for all other exceptions
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<String>> handleGenericException(
             Exception ex, HttpServletRequest request) {
