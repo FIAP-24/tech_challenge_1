@@ -44,7 +44,4 @@ public class Endereco {
     @NotBlank(message = "O CEP é obrigatório")
     @Size(min = 8, max = 8, message = "O CEP deve ter exatamente 8 dígitos")
     private String cep;
-
-    @OneToOne(mappedBy = "endereco")
-    private Usuario usuario;
 }

@@ -15,7 +15,7 @@ import br.com.fiap.tech_challenge_1.repository.EnderecoRepository;
 import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
 import br.com.fiap.tech_challenge_1.service.UsuarioService;
 import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
   private final UsuarioRepository usuarioRepository;
@@ -30,20 +31,6 @@ public class UsuarioServiceImpl implements UsuarioService {
   private final UsuarioMapper usuarioMapper;
   private final EnderecoMapper enderecoMapper;
   private final EnderecoRepository enderecoRepository;
-
-  @Autowired
-  public UsuarioServiceImpl(
-          UsuarioRepository usuarioRepository,
-          PasswordHasher passwordHasher,
-          UsuarioMapper usuarioMapper,
-          EnderecoMapper enderecoMapper,
-          EnderecoRepository enderecoRepository) {
-    this.usuarioRepository = usuarioRepository;
-    this.passwordHasher = passwordHasher;
-    this.usuarioMapper = usuarioMapper;
-    this.enderecoMapper = enderecoMapper;
-    this.enderecoRepository = enderecoRepository;
-  }
 
   @Override
   @Transactional
@@ -55,10 +42,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             u -> {
               throw new DuplicateResourceException("Login já está em uso");
             });
-
-
-    Endereco endereco = enderecoMapper.toEndereco(request.endereco());
-    enderecoRepository.save(endereco);
 
     Usuario usuario = usuarioMapper.toEntity(request);
     usuario.setSenha(passwordHasher.hashPassword(request.senha()));

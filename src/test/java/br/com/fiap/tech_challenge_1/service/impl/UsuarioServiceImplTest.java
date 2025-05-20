@@ -176,7 +176,13 @@ class UsuarioServiceImplTest {
         assertEquals(response, result);
         assertEquals("NovoNome", usuario.getNome());
         assertEquals("novo@email.com", usuario.getEmail());
-        assertEquals("NovaRua", usuario.getEndereco());
+        assertEquals("Rua Teste", usuario.getEndereco().getLogradouro());
+        assertEquals("123", usuario.getEndereco().getNumero());
+        assertEquals("Apto 101", usuario.getEndereco().getComplemento());
+        assertEquals("SP", usuario.getEndereco().getEstado());
+        assertEquals("Centro", usuario.getEndereco().getBairro());
+        assertEquals("12345678", usuario.getEndereco().getCep());
+        assertEquals("São Paulo", usuario.getEndereco().getCidade());
         assertEquals("CLIENTE", usuario.getPerfil());
         assertEquals("novaSenhaHash", usuario.getSenha());
     }

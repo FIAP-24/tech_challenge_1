@@ -48,7 +48,13 @@ class UsuarioMapperTest {
         assertEquals(usuario.getNome(), response.nome());
         assertEquals(usuario.getEmail(), response.email());
         assertEquals(usuario.getLogin(), response.login());
-        assertEquals(usuario.getEndereco(), response.endereco());
+        assertEquals(response.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(response.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(response.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(response.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(response.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(response.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(response.endereco().cep(), usuario.getEndereco().getCep());
         assertEquals(usuario.getDataUpdate(), response.dataUpdate());
     }
 
@@ -101,7 +107,13 @@ class UsuarioMapperTest {
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertNotNull(usuario.getDataUpdate());
         assertNull(usuario.getSenha());
     }
@@ -116,7 +128,13 @@ class UsuarioMapperTest {
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertNotNull(usuario.getDataUpdate());
         assertNull(usuario.getSenha());
     }
@@ -132,7 +150,13 @@ class UsuarioMapperTest {
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertEquals(senhaHash, usuario.getSenha());
         assertNotNull(usuario.getDataUpdate());
     }
