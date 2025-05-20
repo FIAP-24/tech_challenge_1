@@ -7,12 +7,15 @@ import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
 import br.com.fiap.tech_challenge_1.exception.AuthenticationException;
 import br.com.fiap.tech_challenge_1.exception.DuplicateResourceException;
 import br.com.fiap.tech_challenge_1.exception.ResourceNotFoundException;
+import br.com.fiap.tech_challenge_1.mapper.EnderecoMapper;
 import br.com.fiap.tech_challenge_1.mapper.UsuarioMapper;
+import br.com.fiap.tech_challenge_1.model.Endereco;
 import br.com.fiap.tech_challenge_1.model.Usuario;
+import br.com.fiap.tech_challenge_1.repository.EnderecoRepository;
 import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
 import br.com.fiap.tech_challenge_1.service.UsuarioService;
 import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,21 +23,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
   private final UsuarioRepository usuarioRepository;
   private final PasswordHasher passwordHasher;
   private final UsuarioMapper usuarioMapper;
-
-  @Autowired
-  public UsuarioServiceImpl(
-      UsuarioRepository usuarioRepository,
-      PasswordHasher passwordHasher,
-      UsuarioMapper usuarioMapper) {
-    this.usuarioRepository = usuarioRepository;
-    this.passwordHasher = passwordHasher;
-    this.usuarioMapper = usuarioMapper;
-  }
+  private final EnderecoMapper enderecoMapper;
+  private final EnderecoRepository enderecoRepository;
 
   @Override
   @Transactional
@@ -95,10 +91,20 @@ public class UsuarioServiceImpl implements UsuarioService {
             .orElseThrow(
                 () -> new ResourceNotFoundException("Usuário não encontrado com id: " + id));
 
-    existingUsuario.setNome((request.nome() != null && !request.nome().isEmpty()) ? request.nome() : existingUsuario.getNome());
-    existingUsuario.setEmail((request.email() != null && !request.email().isEmpty()) ? request.email() : existingUsuario.getEmail());
-    existingUsuario.setEndereco((request.endereco() != null && !request.endereco().isEmpty()) ? request.endereco() : existingUsuario.getEndereco());
-    existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isEmpty()) ? request.perfil().name() : existingUsuario.getPerfil());
+
+    Endereco endereco = null;
+    if (request.endereco() != null) {
+      endereco = enderecoMapper.toEndereco(request.endereco());
+      endereco = enderecoRepository.save(endereco);
+    }
+
+    if (endereco != null) {
+      existingUsuario.setEndereco(endereco);
+    }
+
+    existingUsuario.setNome((request.nome() != null && !request.nome().isBlank()) ? request.nome() : existingUsuario.getNome());
+    existingUsuario.setEmail((request.email() != null && !request.email().isBlank()) ? request.email() : existingUsuario.getEmail());
+    existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isBlank()) ? request.perfil().name() : existingUsuario.getPerfil());
 
     if (request.senha() != null && !request.senha().isEmpty()) {
       existingUsuario.setSenha(passwordHasher.hashPassword(request.senha()));

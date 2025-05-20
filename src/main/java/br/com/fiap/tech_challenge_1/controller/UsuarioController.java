@@ -7,7 +7,7 @@ import br.com.fiap.tech_challenge_1.dto.response.ApiResponse;
 import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
 import br.com.fiap.tech_challenge_1.service.UsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,10 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-
-    @Autowired
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
 
     /**
      * Get all users

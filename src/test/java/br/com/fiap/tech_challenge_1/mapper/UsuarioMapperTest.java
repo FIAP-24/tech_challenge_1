@@ -1,8 +1,10 @@
 package br.com.fiap.tech_challenge_1.mapper;
 
 import br.com.fiap.tech_challenge_1.domain.enums.Perfil;
+import br.com.fiap.tech_challenge_1.dto.request.EnderecoDTO;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
 import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
+import br.com.fiap.tech_challenge_1.model.Endereco;
 import br.com.fiap.tech_challenge_1.model.Usuario;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +18,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class UsuarioMapperTest {
 
     private final UsuarioMapper mapper = UsuarioMapper.INSTANCE;
+    private final EnderecoMapper enderecoMapper = EnderecoMapper.INSTANCE;
+
+    private Endereco createTestEndereco() {
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro("Rua Teste");
+        endereco.setNumero("123");
+        endereco.setComplemento("Apto 101");
+        endereco.setBairro("Centro");
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        endereco.setCep("12345678");
+        return endereco;
+    }
 
     @Test
     void toResponse_deveMapearUsuarioParaUsuarioResponse() {
@@ -24,7 +39,7 @@ class UsuarioMapperTest {
         usuario.setNome("João");
         usuario.setEmail("joao@email.com");
         usuario.setLogin("joao");
-        usuario.setEndereco("Rua 1");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         UsuarioResponse response = mapper.toResponse(usuario);
@@ -33,7 +48,13 @@ class UsuarioMapperTest {
         assertEquals(usuario.getNome(), response.nome());
         assertEquals(usuario.getEmail(), response.email());
         assertEquals(usuario.getLogin(), response.login());
-        assertEquals(usuario.getEndereco(), response.endereco());
+        assertEquals(response.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(response.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(response.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(response.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(response.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(response.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(response.endereco().cep(), usuario.getEndereco().getCep());
         assertEquals(usuario.getDataUpdate(), response.dataUpdate());
     }
 
@@ -44,7 +65,7 @@ class UsuarioMapperTest {
         usuario.setNome("Maria");
         usuario.setEmail("maria@email.com");
         usuario.setLogin("maria");
-        usuario.setEndereco("Rua 2");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         Set<Usuario> usuarios = new HashSet<>();
@@ -64,7 +85,7 @@ class UsuarioMapperTest {
         usuario.setNome("Carlos");
         usuario.setEmail("carlos@email.com");
         usuario.setLogin("carlos");
-        usuario.setEndereco("Rua 3");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         List<Usuario> usuarios = List.of(usuario);
@@ -77,7 +98,8 @@ class UsuarioMapperTest {
 
     @Test
     void toEntity_deveMapearUsuarioRequestParaUsuario() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
 
         Usuario usuario = mapper.toEntity(request);
 
@@ -85,28 +107,42 @@ class UsuarioMapperTest {
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertNotNull(usuario.getDataUpdate());
         assertNull(usuario.getSenha());
     }
 
     @Test
     void toEntityComId_deveMapearUsuarioRequestParaUsuarioComId() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
         Usuario usuario = mapper.toEntity(request, 10L);
 
         assertEquals(10L, usuario.getId());
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertNotNull(usuario.getDataUpdate());
         assertNull(usuario.getSenha());
     }
 
     @Test
     void toEntityComIdESenha_deveMapearUsuarioRequestParaUsuarioComIdESenha() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
         String senhaHash = "senha123";
         Usuario usuario = mapper.toEntity(request, 20L, senhaHash);
 
@@ -114,7 +150,13 @@ class UsuarioMapperTest {
         assertEquals(request.nome(), usuario.getNome());
         assertEquals(request.email(), usuario.getEmail());
         assertEquals(request.login(), usuario.getLogin());
-        assertEquals(request.endereco(), usuario.getEndereco());
+        assertEquals(request.endereco().logradouro(), usuario.getEndereco().getLogradouro());
+        assertEquals(request.endereco().numero(), usuario.getEndereco().getNumero());
+        assertEquals(request.endereco().complemento(), usuario.getEndereco().getComplemento());
+        assertEquals(request.endereco().bairro(), usuario.getEndereco().getBairro());
+        assertEquals(request.endereco().cidade(), usuario.getEndereco().getCidade());
+        assertEquals(request.endereco().estado(), usuario.getEndereco().getEstado());
+        assertEquals(request.endereco().cep(), usuario.getEndereco().getCep());
         assertEquals(senhaHash, usuario.getSenha());
         assertNotNull(usuario.getDataUpdate());
     }
