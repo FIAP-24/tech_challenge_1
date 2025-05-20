@@ -1,8 +1,10 @@
 package br.com.fiap.tech_challenge_1.mapper;
 
 import br.com.fiap.tech_challenge_1.domain.enums.Perfil;
+import br.com.fiap.tech_challenge_1.dto.request.EnderecoDTO;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
 import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
+import br.com.fiap.tech_challenge_1.model.Endereco;
 import br.com.fiap.tech_challenge_1.model.Usuario;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +18,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class UsuarioMapperTest {
 
     private final UsuarioMapper mapper = UsuarioMapper.INSTANCE;
+    private final EnderecoMapper enderecoMapper = EnderecoMapper.INSTANCE;
+
+    private Endereco createTestEndereco() {
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro("Rua Teste");
+        endereco.setNumero("123");
+        endereco.setComplemento("Apto 101");
+        endereco.setBairro("Centro");
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        endereco.setCep("12345678");
+        return endereco;
+    }
 
     @Test
     void toResponse_deveMapearUsuarioParaUsuarioResponse() {
@@ -24,7 +39,7 @@ class UsuarioMapperTest {
         usuario.setNome("João");
         usuario.setEmail("joao@email.com");
         usuario.setLogin("joao");
-        usuario.setEndereco("Rua 1");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         UsuarioResponse response = mapper.toResponse(usuario);
@@ -44,7 +59,7 @@ class UsuarioMapperTest {
         usuario.setNome("Maria");
         usuario.setEmail("maria@email.com");
         usuario.setLogin("maria");
-        usuario.setEndereco("Rua 2");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         Set<Usuario> usuarios = new HashSet<>();
@@ -64,7 +79,7 @@ class UsuarioMapperTest {
         usuario.setNome("Carlos");
         usuario.setEmail("carlos@email.com");
         usuario.setLogin("carlos");
-        usuario.setEndereco("Rua 3");
+        usuario.setEndereco(createTestEndereco());
         usuario.setDataUpdate(LocalDate.now());
 
         List<Usuario> usuarios = List.of(usuario);
@@ -77,7 +92,8 @@ class UsuarioMapperTest {
 
     @Test
     void toEntity_deveMapearUsuarioRequestParaUsuario() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
 
         Usuario usuario = mapper.toEntity(request);
 
@@ -92,7 +108,8 @@ class UsuarioMapperTest {
 
     @Test
     void toEntityComId_deveMapearUsuarioRequestParaUsuarioComId() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
         Usuario usuario = mapper.toEntity(request, 10L);
 
         assertEquals(10L, usuario.getId());
@@ -106,7 +123,8 @@ class UsuarioMapperTest {
 
     @Test
     void toEntityComIdESenha_deveMapearUsuarioRequestParaUsuarioComIdESenha() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", "teste");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE,"ana", "Rua 4", enderecoDTO);
         String senhaHash = "senha123";
         Usuario usuario = mapper.toEntity(request, 20L, senhaHash);
 

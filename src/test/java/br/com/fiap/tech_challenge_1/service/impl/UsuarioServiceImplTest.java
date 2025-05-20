@@ -1,6 +1,7 @@
 package br.com.fiap.tech_challenge_1.service.impl;
 
 import br.com.fiap.tech_challenge_1.domain.enums.Perfil;
+import br.com.fiap.tech_challenge_1.dto.request.EnderecoDTO;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioEditRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioLoginRequest;
 import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
@@ -8,7 +9,9 @@ import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
 import br.com.fiap.tech_challenge_1.exception.AuthenticationException;
 import br.com.fiap.tech_challenge_1.exception.DuplicateResourceException;
 import br.com.fiap.tech_challenge_1.exception.ResourceNotFoundException;
+import br.com.fiap.tech_challenge_1.mapper.EnderecoMapper;
 import br.com.fiap.tech_challenge_1.mapper.UsuarioMapper;
+import br.com.fiap.tech_challenge_1.model.Endereco;
 import br.com.fiap.tech_challenge_1.model.Usuario;
 import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
 import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
@@ -28,6 +31,20 @@ class UsuarioServiceImplTest {
     private PasswordHasher passwordHasher;
     @Mock
     private UsuarioMapper usuarioMapper;
+    @Mock
+    private final EnderecoMapper enderecoMapper = EnderecoMapper.INSTANCE;
+
+    private Endereco createTestEndereco() {
+        Endereco endereco = new Endereco();
+        endereco.setLogradouro("Rua Teste");
+        endereco.setNumero("123");
+        endereco.setComplemento("Apto 101");
+        endereco.setBairro("Centro");
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        endereco.setCep("12345678");
+        return endereco;
+    }
 
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
@@ -39,7 +56,8 @@ class UsuarioServiceImplTest {
 
     @Test
     void save_deveSalvarUsuarioComSucesso() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "Rua 4", "senha");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "Rua 4", enderecoDTO);
         Usuario usuario = new Usuario();
         usuario.setSenha("senhaHash");
         Usuario saved = new Usuario();
@@ -60,7 +78,8 @@ class UsuarioServiceImplTest {
 
     @Test
     void save_deveLancarExcecaoQuandoLoginDuplicado() {
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "Rua 4", "senha");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "Rua 4", enderecoDTO);
         when(usuarioRepository.findByLogin("ana")).thenReturn(Optional.of(new Usuario()));
 
         assertThrows(DuplicateResourceException.class, () -> usuarioService.save(request));
@@ -136,12 +155,13 @@ class UsuarioServiceImplTest {
 
     @Test
     void update_deveAtualizarUsuarioComSucesso() {
-        UsuarioEditRequest request = new UsuarioEditRequest("NovoNome", "novo@email.com", Perfil.CLIENTE, "novaSenha", "NovaRua");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioEditRequest request = new UsuarioEditRequest("NovoNome", "novo@email.com", Perfil.CLIENTE, "novaSenha", enderecoDTO);
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setNome("AntigoNome");
         usuario.setEmail("antigo@email.com");
-        usuario.setEndereco("AntigaRua");
+        usuario.setEndereco(createTestEndereco());
         usuario.setPerfil("CLIENTE");
         Usuario updated = new Usuario();
         UsuarioResponse response = mock(UsuarioResponse.class);
@@ -163,7 +183,8 @@ class UsuarioServiceImplTest {
 
     @Test
     void update_deveLancarExcecaoQuandoUsuarioNaoEncontrado() {
-        UsuarioEditRequest request = new UsuarioEditRequest("Nome", "email", Perfil.PROPRIETARIO, "Endereco", "senha");
+        EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
+        UsuarioEditRequest request = new UsuarioEditRequest("Nome", "email", Perfil.PROPRIETARIO, "Endereco", enderecoDTO);
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> usuarioService.update(1L, request));

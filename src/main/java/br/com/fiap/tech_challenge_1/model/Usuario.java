@@ -35,6 +35,7 @@ public class Usuario {
 
     private LocalDate dataUpdate;
 
-    @Column(length = 255)
-    private String endereco;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
 }

@@ -14,5 +14,5 @@ public record UsuarioEditRequest(
         @Size(min = 6, message = "Senha deve ter no mínimo 6 caracteres")
         String senha,
 
-        String endereco
+        EnderecoDTO endereco
 ) {}
