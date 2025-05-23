@@ -6,6 +6,8 @@ import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
 import br.com.fiap.tech_challenge_1.dto.response.ApiResponse;
 import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
 import br.com.fiap.tech_challenge_1.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/v1/usuarios")
 @RequiredArgsConstructor
+@Tag(name = "Usurios", description = "Operaçōes relacionadas a usuários")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -25,6 +28,7 @@ public class UsuarioController {
      * Get all users
      * @return List of users
      */
+    @Operation(summary = "Lista todos os usuários.")
     @GetMapping
     public ResponseEntity<ApiResponse<Set<UsuarioResponse>>> findAll() {
         Set<UsuarioResponse> usuarios = usuarioService.findAll();
@@ -36,6 +40,7 @@ public class UsuarioController {
      * @param id User ID
      * @return User details
      */
+    @Operation(summary = "Busca usuário por ID.")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UsuarioResponse>> findById(@PathVariable Long id) {
         UsuarioResponse usuario = usuarioService.findById(id);
@@ -47,6 +52,7 @@ public class UsuarioController {
      * @param usuarioRequest User data
      * @return Created user
      */
+    @Operation(summary = "Cria um novo usuário.")
     @PostMapping
     public ResponseEntity<ApiResponse<UsuarioResponse>> create(@Valid @RequestBody UsuarioRequest usuarioRequest) {
         UsuarioResponse created = usuarioService.save(usuarioRequest);
@@ -61,6 +67,7 @@ public class UsuarioController {
      * @param usuarioEditRequest Updated user data
      * @return Updated user
      */
+    @Operation(summary = "Atualiza usuário existente por ID.")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UsuarioResponse>> update(
             @PathVariable Long id,
@@ -74,6 +81,7 @@ public class UsuarioController {
      * @param loginRequest Login credentials
      * @return Authentication result
      */
+    @Operation(summary = "Autentica usuário.")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Boolean>> login(@Valid @RequestBody UsuarioLoginRequest loginRequest) {
         boolean authenticated = usuarioService.authenticate(loginRequest);
@@ -89,6 +97,7 @@ public class UsuarioController {
      * @param id User ID
      * @return Confirmation message
      */
+    @Operation(summary = "Remove usuário por ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         usuarioService.delete(id);
