@@ -35,7 +35,7 @@ public class Usuario {
 
     private LocalDate dataUpdate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 }
