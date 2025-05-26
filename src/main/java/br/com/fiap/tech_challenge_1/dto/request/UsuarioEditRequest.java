@@ -7,6 +7,7 @@ public record UsuarioEditRequest(
 
         String nome,
 
+        @Email(message = "Email deve ser válido")
         String email,
 
         Perfil perfil,

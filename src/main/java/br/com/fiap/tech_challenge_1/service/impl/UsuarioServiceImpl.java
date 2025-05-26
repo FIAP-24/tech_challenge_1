@@ -19,6 +19,7 @@
   import org.springframework.stereotype.Service;
   import org.springframework.transaction.annotation.Transactional;
 
+  import java.time.LocalDate;
   import java.util.Set;
   import java.util.stream.Collectors;
 
@@ -105,6 +106,7 @@
       existingUsuario.setNome((request.nome() != null && !request.nome().isBlank()) ? request.nome() : existingUsuario.getNome());
       existingUsuario.setEmail((request.email() != null && !request.email().isBlank()) ? request.email() : existingUsuario.getEmail());
       existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isBlank()) ? request.perfil().name() : existingUsuario.getPerfil());
+      existingUsuario.setDataUpdate(LocalDate.now());
 
       if (request.senha() != null && !request.senha().isEmpty()) {
         existingUsuario.setSenha(passwordHasher.hashPassword(request.senha()));
@@ -112,13 +114,17 @@
     }
 
     private void updateEndereco(UsuarioEditRequest request, Usuario existingUsuario) {
-     existingUsuario.getEndereco().setBairro((request.endereco().bairro() != null && !request.endereco().bairro().isBlank() ? request.endereco().bairro() : existingUsuario.getEndereco().getBairro()));
-      existingUsuario.getEndereco().setCidade((request.endereco().cidade() != null && !request.endereco().cidade().isBlank() ? request.endereco().cidade() : existingUsuario.getEndereco().getCidade()));
-      existingUsuario.getEndereco().setLogradouro((request.endereco().logradouro() != null && !request.endereco().logradouro().isBlank() ? request.endereco().logradouro() : existingUsuario.getEndereco().getLogradouro()));
-      existingUsuario.getEndereco().setCep((request.endereco().cep() != null && !request.endereco().cep().isBlank() ? request.endereco().cep() : existingUsuario.getEndereco().getCep()));
-      existingUsuario.getEndereco().setComplemento((request.endereco().complemento() != null && !request.endereco().complemento().isBlank() ? request.endereco().complemento() : existingUsuario.getEndereco().getComplemento()));
-      existingUsuario.getEndereco().setEstado((request.endereco().estado() != null && !request.endereco().estado().isBlank() ? request.endereco().estado() : existingUsuario.getEndereco().getEstado()));
-      existingUsuario.getEndereco().setNumero((request.endereco().numero() != null && !request.endereco().numero().isBlank() ? request.endereco().numero() : existingUsuario.getEndereco().getNumero()));
+      if (existingUsuario.getEndereco() == null) {
+        existingUsuario.setEndereco(enderecoMapper.toEndereco(request.endereco()));
+      }else {
+        existingUsuario.getEndereco().setBairro((request.endereco().bairro() != null && !request.endereco().bairro().isBlank() ? request.endereco().bairro() : existingUsuario.getEndereco().getBairro()));
+        existingUsuario.getEndereco().setCidade((request.endereco().cidade() != null && !request.endereco().cidade().isBlank() ? request.endereco().cidade() : existingUsuario.getEndereco().getCidade()));
+        existingUsuario.getEndereco().setLogradouro((request.endereco().logradouro() != null && !request.endereco().logradouro().isBlank() ? request.endereco().logradouro() : existingUsuario.getEndereco().getLogradouro()));
+        existingUsuario.getEndereco().setCep((request.endereco().cep() != null && !request.endereco().cep().isBlank() ? request.endereco().cep() : existingUsuario.getEndereco().getCep()));
+        existingUsuario.getEndereco().setComplemento((request.endereco().complemento() != null && !request.endereco().complemento().isBlank() ? request.endereco().complemento() : existingUsuario.getEndereco().getComplemento()));
+        existingUsuario.getEndereco().setEstado((request.endereco().estado() != null && !request.endereco().estado().isBlank() ? request.endereco().estado() : existingUsuario.getEndereco().getEstado()));
+        existingUsuario.getEndereco().setNumero((request.endereco().numero() != null && !request.endereco().numero().isBlank() ? request.endereco().numero() : existingUsuario.getEndereco().getNumero()));
+      }
     }
 
     @Override
