@@ -5,6 +5,7 @@ import br.com.fiap.tech_challenge_1.exception.DuplicateResourceException;
 import br.com.fiap.tech_challenge_1.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -44,4 +45,16 @@ public class ControllerExceptionHandler {
         );
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleJsonParseError(HttpMessageNotReadableException ex) {
+        ApiError apiError = new ApiError(
+                HttpStatus.BAD_REQUEST.value(),
+                "JSON Inválido: ",
+                ex.getMessage()
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
 }
