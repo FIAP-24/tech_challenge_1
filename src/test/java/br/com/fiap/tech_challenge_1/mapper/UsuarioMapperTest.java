@@ -7,6 +7,8 @@ import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
 import br.com.fiap.tech_challenge_1.model.Endereco;
 import br.com.fiap.tech_challenge_1.model.Usuario;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class UsuarioMapperTest {
 
     private final UsuarioMapper mapper = UsuarioMapper.INSTANCE;

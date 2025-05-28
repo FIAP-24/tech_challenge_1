@@ -17,12 +17,16 @@ import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
 import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class UsuarioServiceImplTest {
 
     @Mock
@@ -49,17 +53,15 @@ class UsuarioServiceImplTest {
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void save_deveSalvarUsuarioComSucesso() {
         EnderecoDTO enderecoDTO = enderecoMapper.toEnderecoDTO(createTestEndereco());
-        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "Rua 4", enderecoDTO);
+        UsuarioRequest request = new UsuarioRequest("Ana", "ana@email.com", Perfil.CLIENTE, "ana", "senha", enderecoDTO);
+
         Usuario usuario = new Usuario();
+        usuario.setLogin("ana");
         usuario.setSenha("senhaHash");
+
         Usuario saved = new Usuario();
         UsuarioResponse response = mock(UsuarioResponse.class);
 
