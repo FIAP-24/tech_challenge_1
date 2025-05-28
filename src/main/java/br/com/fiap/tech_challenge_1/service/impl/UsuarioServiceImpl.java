@@ -1,29 +1,26 @@
-  package br.com.fiap.tech_challenge_1.service.impl;
+package br.com.fiap.tech_challenge_1.service.impl;
 
-  import br.com.fiap.tech_challenge_1.dto.request.UsuarioEditRequest;
-  import br.com.fiap.tech_challenge_1.dto.request.UsuarioLoginRequest;
-  import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
-  import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
-  import br.com.fiap.tech_challenge_1.exception.AuthenticationException;
-  import br.com.fiap.tech_challenge_1.exception.DuplicateResourceException;
-  import br.com.fiap.tech_challenge_1.exception.ResourceNotFoundException;
-  import br.com.fiap.tech_challenge_1.mapper.EnderecoMapper;
-  import br.com.fiap.tech_challenge_1.mapper.UsuarioMapper;
-  import br.com.fiap.tech_challenge_1.model.Endereco;
-  import br.com.fiap.tech_challenge_1.model.Usuario;
-  import br.com.fiap.tech_challenge_1.repository.EnderecoRepository;
-  import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
-  import br.com.fiap.tech_challenge_1.service.UsuarioService;
-  import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
-  import lombok.RequiredArgsConstructor;
-  import org.springframework.stereotype.Service;
-  import org.springframework.transaction.annotation.Transactional;
+import br.com.fiap.tech_challenge_1.dto.request.UsuarioEditRequest;
+import br.com.fiap.tech_challenge_1.dto.request.UsuarioLoginRequest;
+import br.com.fiap.tech_challenge_1.dto.request.UsuarioRequest;
+import br.com.fiap.tech_challenge_1.dto.response.UsuarioResponse;
+import br.com.fiap.tech_challenge_1.exception.AuthenticationException;
+import br.com.fiap.tech_challenge_1.exception.DuplicateResourceException;
+import br.com.fiap.tech_challenge_1.exception.ResourceNotFoundException;
+import br.com.fiap.tech_challenge_1.mapper.EnderecoMapper;
+import br.com.fiap.tech_challenge_1.mapper.UsuarioMapper;
+import br.com.fiap.tech_challenge_1.model.Usuario;
+import br.com.fiap.tech_challenge_1.repository.UsuarioRepository;
+import br.com.fiap.tech_challenge_1.service.UsuarioService;
+import br.com.fiap.tech_challenge_1.utils.PasswordHasher;
+import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-  import java.time.LocalDate;
-  import java.util.Set;
-  import java.util.stream.Collectors;
-
-  @Service
+@Service
   @RequiredArgsConstructor
   public class UsuarioServiceImpl implements UsuarioService {
 
@@ -31,11 +28,11 @@
     private final PasswordHasher passwordHasher;
     private final UsuarioMapper usuarioMapper;
     private final EnderecoMapper enderecoMapper;
-    private final EnderecoRepository enderecoRepository;
 
-    @Override
-    @Transactional
-    public UsuarioResponse save(UsuarioRequest request) {
+
+  @Override
+  @Transactional
+  public UsuarioResponse save(UsuarioRequest request) {
 
       usuarioRepository
           .findByLogin(request.login())
@@ -102,16 +99,17 @@
       return usuarioMapper.toResponse(updated);
     }
 
-    private void updateUsuario(UsuarioEditRequest request, Usuario existingUsuario) {
-      existingUsuario.setNome((request.nome() != null && !request.nome().isBlank()) ? request.nome() : existingUsuario.getNome());
-      existingUsuario.setEmail((request.email() != null && !request.email().isBlank()) ? request.email() : existingUsuario.getEmail());
-      existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isBlank()) ? request.perfil().name() : existingUsuario.getPerfil());
-      existingUsuario.setDataUpdate(LocalDate.now());
+      private void updateUsuario(UsuarioEditRequest request, Usuario existingUsuario) {
+          existingUsuario.setNome((request.nome() != null && !request.nome().isBlank()) ? request.nome() : existingUsuario.getNome());
+          existingUsuario.setEmail((request.email() != null && !request.email().isBlank()) ? request.email() : existingUsuario.getEmail());
+          existingUsuario.setPerfil((request.perfil() != null && !request.perfil().name().isBlank()) ? request.perfil().name() : existingUsuario.getPerfil());
+          existingUsuario.setDataUpdate(LocalDate.now());
 
-      if (request.senha() != null && !request.senha().isEmpty()) {
-        existingUsuario.setSenha(passwordHasher.hashPassword(request.senha()));
+          if (request.senha() != null && !request.senha().isEmpty()) {
+              existingUsuario.setSenha(passwordHasher.hashPassword(request.senha()));
+          }
       }
-    }
+
 
     private void updateEndereco(UsuarioEditRequest request, Usuario existingUsuario) {
       if (existingUsuario.getEndereco() == null) {
