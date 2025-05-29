@@ -64,7 +64,15 @@ Cria um novo usuário.
     "perfil": "PROPRIETARIO ou CLIENTE",
     "login": "string",
     "senha": "string",
-    "endereco": "string"
+        "endereco": {
+            "logradouro": "string",
+            "numero": "string",
+            "complemento": "string",
+            "bairro": "string",
+            "cidade": "string",
+            "estado": "string",
+            "cep": "string"
+        }
     }
     ```
 
@@ -78,7 +86,15 @@ Atualiza um usuário existente.
       "email": "string",
       "perfil": "ADMIN ou USER",
       "senha": "string",
-      "endereco": "string"
+        "endereco": {
+            "logradouro": "string",
+            "numero": "string",
+            "complemento": "string",
+            "bairro": "string",
+            "cidade": "string",
+            "estado": "string",
+            "cep": "string"
+        }
       }
     ```
     
