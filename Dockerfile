@@ -1,9 +1,15 @@
-FROM openjdk:21-slim
+# Construindo pacote
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
+# Criando imagem jdk 21 slim
+FROM openjdk:21-slim
 WORKDIR /app
 
-COPY target/tech_challenge_1-0.0.1-SNAPSHOT.jar .
+# Copiando o JAR que foi criado no builder stage
+COPY --from=builder /app/target/*.jar app.jar
 
-RUN ls
-
-CMD ["java", "-jar", "tech_challenge_1-0.0.1-SNAPSHOT.jar"]
+# Iniciando app
+CMD ["java", "-jar", "app.jar"]
