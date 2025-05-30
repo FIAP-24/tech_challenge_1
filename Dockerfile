@@ -11,5 +11,10 @@ WORKDIR /app
 # Copiando o JAR que foi criado no builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
+ENV SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3308/challenge
+ENV SPRING_DATASOURCE_USERNAME=root
+ENV SPRING_DATASOURCE_PASSWORD=Test@123
+
+
 # Iniciando app
 CMD ["java", "-jar", "app.jar"]
